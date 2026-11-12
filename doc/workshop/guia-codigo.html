@@ -1,0 +1,545 @@
+<title>Field Shift: ruta del código</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: guion de presentador. Rail de hitos a la izquierda (desktop), tarjetas de hito a la derecha.
+   Dos pistas con color propio: NASA (azul) y Avalanche (rojo); el motor en verde andino. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #16202c;
+  --muted: #5a6676;
+  --line: #dde2e9;
+  --code-bg: #f0f2f6;
+  --nasa: #0b3d91;
+  --nasa-soft: #e6ecf8;
+  --avax: #c8302f;
+  --avax-soft: #fbe9e8;
+  --motor: #2f6f4f;
+  --motor-soft: #e5f1ea;
+  --mark: #fff1c2;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #161d27; --fg: #e6ebf1; --muted: #9aa6b5; --line: #2a3442;
+    --code-bg: #1c2532; --nasa: #8fb0ff; --nasa-soft: #1a2944; --avax: #ff7b77; --avax-soft: #3a1e20;
+    --motor: #7fcfa3; --motor-soft: #17322a; --mark: #4a3f16; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #161d27; --fg: #e6ebf1; --muted: #9aa6b5; --line: #2a3442;
+  --code-bg: #1c2532; --nasa: #8fb0ff; --nasa-soft: #1a2944; --avax: #ff7b77; --avax-soft: #3a1e20;
+  --motor: #7fcfa3; --motor-soft: #17322a; --mark: #4a3f16; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-family: var(--font-body); font-weight: 600; }
+p { margin: 0; }
+a { color: var(--nasa); }
+code, pre { font-family: var(--font-mono); font-size: 0.86em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 32px; }
+.intro { display: grid; gap: 14px; max-width: 70ch; }
+.eyebrow { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.lead { font-size: 1.05rem; color: var(--muted); }
+.tracks { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.02em; white-space: nowrap; }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.t-nasa { color: var(--nasa); background: var(--nasa-soft); }
+.t-avax { color: var(--avax); background: var(--avax-soft); }
+.t-motor { color: var(--motor); background: var(--motor-soft); }
+.layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 32px; align-items: start; }
+nav.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: grid; gap: 4px; font-size: 0.86rem; }
+nav.rail a { display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: center; color: var(--fg); text-decoration: none; padding: 6px 8px; border-radius: 6px; }
+nav.rail a:hover, nav.rail a:focus-visible { background: var(--surface); outline: none; }
+nav.rail a:focus-visible { box-shadow: 0 0 0 2px var(--nasa); }
+nav.rail .n { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+nav.rail .dot { width: 8px; height: 8px; border-radius: 50%; }
+nav.rail a.done .t { color: var(--muted); text-decoration: line-through; }
+.rail-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 8px 8px; border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.rail-head span { font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.d-nasa { background: var(--nasa); } .d-avax { background: var(--avax); } .d-motor { background: var(--motor); } .d-plain { background: var(--muted); }
+main { display: grid; gap: 22px; min-width: 0; }
+section.hito { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: grid; gap: 16px; min-width: 0; scroll-margin-top: 16px; }
+section.hito.nasa { border-top: 3px solid var(--nasa); }
+section.hito.avax { border-top: 3px solid var(--avax); }
+section.hito.motor { border-top: 3px solid var(--motor); }
+.hito-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.hito-head .num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); }
+.hito-head h2 { flex: 1 1 260px; }
+.min { font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.check { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); cursor: pointer; }
+.check input { width: 16px; height: 16px; accent-color: var(--motor); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px 24px; }
+.block { display: grid; gap: 6px; min-width: 0; }
+.block ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.file { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.file code { background: var(--code-bg); border: 1px solid var(--line); padding: 2px 7px; border-radius: 5px; font-size: 0.8rem; }
+pre.code { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; line-height: 1.5; font-size: 0.8rem; }
+pre.code .ln { color: var(--muted); user-select: none; display: inline-block; width: 2.6em; }
+pre.code mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2px; }
+pre.code .c { color: var(--muted); }
+.say { background: var(--bg); border-radius: 8px; padding: 12px 14px; display: grid; gap: 6px; }
+.say p::before { content: "“"; color: var(--muted); }
+.say p::after { content: "”"; color: var(--muted); }
+.ask { border-left: 3px solid var(--line); padding-left: 12px; display: grid; gap: 4px; }
+.ask strong { font-weight: 600; }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+.tbl { overflow-x: auto; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+.prep { display: grid; gap: 10px; }
+.prep ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+pre.mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; overflow-x: auto; margin: 0; }
+.faq { display: grid; gap: 12px; }
+.faq details { background: var(--bg); border-radius: 8px; padding: 10px 14px; }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq details p { margin-top: 8px; color: var(--fg); }
+.warn { font-size: 0.86rem; background: var(--avax-soft); color: var(--fg); border-radius: 8px; padding: 10px 14px; }
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  nav.rail { position: static; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .rail-head { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="eyebrow">Workshop · NASA Space Apps 2026 · Moquegua</span>
+    <h1>Field Shift: la ruta del código</h1>
+    <p class="lead">Guion para explicar el código en unos 45 minutos. Cada hito dice qué mostrar en la app, qué archivo abrir en VS Code (con líneas) y qué decir. La charla sigue el camino del dato: del satélite de la NASA, al motor que decide, al contrato en Avalanche que paga.</p>
+    <div class="tracks">
+      <span class="tag t-nasa">NASA · datos satelitales</span>
+      <span class="tag t-motor">Motor · reglas explicables</span>
+      <span class="tag t-avax">Avalanche · seguro on-chain</span>
+    </div>
+    <p class="warn"><strong>Recuérdalo en voz alta:</strong> el contrato es educativo y no está auditado. Solo Fuji y wallets de prueba, nunca fondos reales.</p>
+  </header>
+
+  <div class="layout">
+    <nav class="rail" aria-label="Hitos">
+      <div class="rail-head"><strong>Hitos</strong><span id="progreso">0 / 12</span></div>
+      <a href="#h0"><span class="n">00</span><span class="t">Antes de empezar</span><span class="dot d-plain"></span></a>
+      <a href="#h1"><span class="n">01</span><span class="t">El mapa completo</span><span class="dot d-plain"></span></a>
+      <a href="#h2"><span class="n">02</span><span class="t">Pedirle datos a la NASA</span><span class="dot d-nasa"></span></a>
+      <a href="#h3"><span class="n">03</span><span class="t">Limpiar el dato crudo</span><span class="dot d-nasa"></span></a>
+      <a href="#h4"><span class="n">04</span><span class="t">La API que no se cae</span><span class="dot d-nasa"></span></a>
+      <a href="#h5"><span class="n">05</span><span class="t">De meses a campañas</span><span class="dot d-motor"></span></a>
+      <a href="#h6"><span class="n">06</span><span class="t">El motor de rotación</span><span class="dot d-motor"></span></a>
+      <a href="#h7"><span class="n">07</span><span class="t">El índice del seguro</span><span class="dot d-nasa"></span></a>
+      <a href="#h8"><span class="n">08</span><span class="t">El contrato en Solidity</span><span class="dot d-avax"></span></a>
+      <a href="#h9"><span class="n">09</span><span class="t">Desplegar en Fuji y el oráculo</span><span class="dot d-avax"></span></a>
+      <a href="#h10"><span class="n">10</span><span class="t">La web habla con Avalanche</span><span class="dot d-avax"></span></a>
+      <a href="#h11"><span class="n">11</span><span class="t">Por qué confiamos: tests</span><span class="dot d-motor"></span></a>
+      <a href="#h12"><span class="n">12</span><span class="t">Cierre y retos</span><span class="dot d-plain"></span></a>
+    </nav>
+
+    <main>
+      <!-- 00 -->
+      <section class="hito" id="h0">
+        <div class="hito-head"><span class="num">00</span><h2>Antes de empezar</h2><span class="min">10 min antes</span>
+          <label class="check"><input type="checkbox" id="c0" data-h="h0"> Listo</label></div>
+        <div class="prep">
+          <ol>
+            <li>Docker Desktop abierto; en la terminal de VS Code: <code>npx supabase start</code> y <code>npm run dev</code>.</li>
+            <li>Navegador en <code>http://localhost:3000/es/field-shift</code>. Si el wifi es malo, arranca con <code>FIELD_SHIFT_OFFLINE=true npm run dev</code>.</li>
+            <li>Wallet de prueba (Core o MetaMask) en <strong>Avalanche Fuji</strong> con un poco de AVAX del faucet.</li>
+            <li>Pestaña abierta en Snowtrace con el contrato: <a href="https://testnet.snowtrace.io/address/0x594c5D7Bb4ff20F296c1CfacFE4c5555e278961c" target="_blank" rel="noopener">0x594c…961c</a>.</li>
+            <li>En VS Code, zoom con <code>Ctrl + =</code> y estos archivos abiertos en pestañas, en este orden: <code>nasa.ts</code>, <code>route.ts</code>, <code>rotacion.ts</code>, <code>PolizaParametrica.sol</code>, <code>usePoliza.ts</code>.</li>
+          </ol>
+          <p class="min">Todas las rutas son relativas a la raíz del repo <a href="https://github.com/ferrosasfp/field-shift" target="_blank" rel="noopener">ferrosasfp/field-shift</a>. <code>Ctrl + P</code> y el nombre del archivo; <code>Ctrl + G</code> para saltar a una línea.</p>
+        </div>
+      </section>
+
+      <!-- 01 -->
+      <section class="hito" id="h1">
+        <div class="hito-head"><span class="num">01</span><h2>El mapa completo</h2><span class="min">3 min</span>
+          <label class="check"><input type="checkbox" id="c1" data-h="h1"> Hecho</label></div>
+        <pre class="mermaid">
+flowchart LR
+  subgraph NASA["NASA POWER"]
+    A["API mensual<br/>lluvia, temperatura,<br/>humedad del suelo"]
+  end
+  subgraph APP["App Next.js"]
+    B["/api/field-shift/nasa<br/>caché 24 h + copia offline"]
+    C["rotacion.ts<br/>clima, rotación, backtest"]
+    D["Pantalla<br/>5 clics"]
+  end
+  subgraph AVAX["Avalanche Fuji"]
+    E["PolizaParametrica.sol<br/>compra, índice, pago"]
+    F["Oráculo<br/>publica el índice"]
+  end
+  A --> B --> C --> D
+  D -- "wallet: comprar / reclamar" --> E
+  F -- "reportarIndice" --> E
+        </pre>
+        <div class="say">
+          <p>Hay tres piezas. La NASA pone los datos, gratis y sin llave. Nuestro motor los convierte en decisiones que un agricultor puede entender. Y Avalanche guarda una promesa que nadie puede cambiar: si el satélite dice que hubo sequía, el seguro paga.</p>
+          <p>La regla de oro del proyecto: toda la lógica está en funciones puras de TypeScript. Las podemos probar sin red, sin base de datos y sin blockchain.</p>
+        </div>
+      </section>
+
+      <!-- 02 -->
+      <section class="hito nasa" id="h2">
+        <div class="hito-head"><span class="num">02</span><h2>Pedirle datos a la NASA</h2><span class="tag t-nasa">NASA</span><span class="min">4 min</span>
+          <label class="check"><input type="checkbox" id="c2" data-h="h2"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>Elige <strong>Carumas</strong> y presiona <strong>Consultar NASA</strong>. Mientras carga, cambia a VS Code.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>src/features/field-shift/services/nasa.ts:20-33</code></div></div>
+        </div>
+<pre class="code"><span class="ln">20</span>export const VARIABLES = [<mark>'PRECTOTCORR', 'T2M', 'T2M_MIN', 'GWETROOT'</mark>] as const
+<span class="ln">21</span>
+<span class="ln">22</span>export function urlNasaPower(lat: number, lon: number): string {
+<span class="ln">23</span>  const params = new URLSearchParams({
+<span class="ln">24</span>    parameters: VARIABLES.join(','),
+<span class="ln">25</span>    <mark>community: 'AG'</mark>,
+<span class="ln">26</span>    latitude: String(lat),
+<span class="ln">27</span>    longitude: String(lon),
+<span class="ln">28</span>    start: String(ANIO_INICIO),
+<span class="ln">29</span>    end: String(ANIO_FIN),
+<span class="ln">30</span>    format: 'JSON',
+<span class="ln">31</span>  })
+<span class="ln">32</span>  return `https://power.larc.nasa.gov/api/temporal/<mark>monthly/point</mark>?${params}`
+<span class="ln">33</span>}</pre>
+        <div class="tbl"><table>
+          <thead><tr><th>Variable</th><th>Qué es</th><th>Para qué la usamos</th></tr></thead>
+          <tbody>
+            <tr><td><code>PRECTOTCORR</code></td><td>Lluvia corregida, mm por día</td><td>Agua de la campaña y años secos</td></tr>
+            <tr><td><code>T2M</code></td><td>Temperatura del aire a 2 m</td><td>Contexto</td></tr>
+            <tr><td><code>T2M_MIN</code></td><td>Temperatura mínima a 2 m</td><td>Riesgo de helada</td></tr>
+            <tr><td><code>GWETROOT</code></td><td>Humedad del suelo en la zona de raíces (0 a 1)</td><td>El índice del seguro</td></tr>
+          </tbody>
+        </table></div>
+        <div class="say">
+          <p>NASA POWER junta datos de satélites y modelos de la NASA y los publica por coordenada. No pide registro ni llave: una URL y tienes 25 años de clima.</p>
+          <p><code>community: 'AG'</code> le dice a la NASA que somos agricultura, y la API devuelve las unidades que usa ese sector.</p>
+          <p>Las coordenadas de las cuatro zonas están en <code>data/zonas.json</code>. Para agregar un distrito basta una línea.</p>
+        </div>
+      </section>
+
+      <!-- 03 -->
+      <section class="hito nasa" id="h3">
+        <div class="hito-head"><span class="num">03</span><h2>Limpiar el dato crudo</h2><span class="tag t-nasa">NASA</span><span class="min">3 min</span>
+          <label class="check"><input type="checkbox" id="c3" data-h="h3"> Hecho</label></div>
+        <div class="block"><h3>Abre</h3><div class="file"><code>src/features/field-shift/services/nasa.ts:52-76</code></div></div>
+<pre class="code"><span class="ln">52</span>const valido = (v: number | undefined): number | null => (v === undefined || <mark>v &lt;= -999</mark> ? null : v)
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">61</span>  for (const clave of Object.keys(p.PRECTOTCORR)) {
+<span class="ln">62</span>    const anio = Number(clave.slice(0, 4))
+<span class="ln">63</span>    const mes = Number(clave.slice(4, 6))
+<span class="ln">64</span>    <mark>if (mes &lt; 1 || mes &gt; 12) continue</mark> <span class="c">// el mes "13" es el promedio anual</span>
+<span class="ln">65</span>    const lluviaDia = valido(p.PRECTOTCORR[clave])
+<span class="ln">66</span>    meses.push({
+<span class="ln">67</span>      anio,
+<span class="ln">68</span>      mes,
+<span class="ln">69</span>      lluvia: lluviaDia === null ? null : <mark>lluviaDia * diasDelMes(anio, mes)</mark>,</pre>
+        <div class="say">
+          <p>Los datos reales vienen con trampas. La NASA marca los huecos con <code>-999</code>; si no los filtras, tu promedio se va a los negativos.</p>
+          <p>La API agrega un mes 13, que es el promedio del año. Si lo cuentas como un mes más, cuentas la lluvia dos veces.</p>
+          <p>La lluvia llega en milímetros por día. La multiplicamos por los días de cada mes para tener milímetros por mes, y febrero bisiesto también cuenta.</p>
+          <p>Antes de todo eso, Zod valida la forma de la respuesta (líneas 37-46). Si la NASA cambia el formato, fallamos con un mensaje claro y no con números raros.</p>
+        </div>
+      </section>
+
+      <!-- 04 -->
+      <section class="hito nasa" id="h4">
+        <div class="hito-head"><span class="num">04</span><h2>La API que no se cae</h2><span class="tag t-nasa">NASA</span><span class="min">4 min</span>
+          <label class="check"><input type="checkbox" id="c4" data-h="h4"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>Muestra la etiqueta de origen bajo el botón: <strong>NASA POWER (en vivo)</strong> o <strong>NASA POWER (copia guardada)</strong>.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>src/app/api/field-shift/nasa/route.ts:17-56</code></div></div>
+        </div>
+<pre class="code"><span class="ln">17</span>const querySchema = z.object({ zona: z.string().<mark>refine(esZonaId)</mark> })
+<span class="ln">18</span>const TIMEOUT_MS = <mark>8_000</mark>
+<span class="ln">19</span>const REVALIDATE_S = <mark>86_400</mark>
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">24</span>  const r = await fetch(urlNasaPower(coords.lat, coords.lon), {
+<span class="ln">25</span>    signal: AbortSignal.timeout(TIMEOUT_MS),
+<span class="ln">26</span>    next: { revalidate: REVALIDATE_S },
+<span class="ln">27</span>  })
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">44</span>  if (process.env.FIELD_SHIFT_OFFLINE !== 'true') {
+<span class="ln">45</span>    try {
+<span class="ln">46</span>      meses = await consultarNasa(zona)
+<span class="ln">47</span>      origen = 'nasa'
+<span class="ln">48</span>    } catch (err) { <span class="c">/* … log y seguimos */</span> }
+<span class="ln">52</span>  }
+<span class="ln">53</span>  <mark>if (!meses) meses = normalizarNasa(obtenerSnapshot(zona))</mark></pre>
+        <div class="say">
+          <p>El navegador nunca habla con la NASA directo: pasa por nuestro servidor. Así controlamos el tiempo de espera, la caché y qué zonas se pueden pedir.</p>
+          <p>Si la NASA tarda más de 8 segundos o falla, usamos una copia de los datos que viene en el repo, en <code>data/*.json</code>. La demo funciona aunque el wifi del auditorio no ayude.</p>
+          <p>La respuesta se guarda 24 horas: los datos son mensuales y no cambian en un día, así que no tiene sentido pedirle lo mismo a la NASA mil veces.</p>
+          <p>Solo aceptamos las cuatro zonas de la lista, nunca una latitud y longitud libres. Nadie puede usar nuestro servidor como proxy gratis hacia la NASA.</p>
+        </div>
+      </section>
+
+      <!-- 05 -->
+      <section class="hito motor" id="h5">
+        <div class="hito-head"><span class="num">05</span><h2>De meses a campañas</h2><span class="tag t-motor">Motor</span><span class="tag t-nasa">NASA</span><span class="min">5 min</span>
+          <label class="check"><input type="checkbox" id="c5" data-h="h5"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>Lee las tarjetas de clima. Luego cambia a <strong>Solo años con El Niño</strong> y mira cómo cambian.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>services/rotacion.ts:25-26</code><code>rotacion.ts:84-124</code><code>services/enso.ts:19-26</code></div></div>
+        </div>
+<pre class="code"><span class="ln">25</span>export const CAMPANIA = [<mark>10, 11, 12, 1, 2, 3, 4</mark>] <span class="c">// octubre a abril</span>
+<span class="ln">26</span>export const VENTANA_CRITICA = [<mark>12, 1, 2</mark>] <span class="c">// diciembre a febrero</span>
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">97</span>  const seleccion = escenario === 'todas' ? campanias : campanias.filter((c) => c.fase === escenario)
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">101</span>  const secas = seleccion.filter((c) => c.lluvia &lt; <mark>0.75 * lluviaNormal</mark>)
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">120</span>    riesgoHelada: promedio(seleccion.map((c) => c.mesesHelada / CAMPANIA.length)),
+<span class="ln">121</span>    tendencia: (despues - antes) / antes, <span class="c">// ej. -0.08 = 8% menos lluvia</span></pre>
+        <div class="tbl"><table>
+          <thead><tr><th>Carumas</th><th>Todas las campañas</th><th>Solo El Niño</th></tr></thead>
+          <tbody>
+            <tr><td>Campañas secas (lluvia &lt; 75 % de lo normal)</td><td>21 %</td><td>25 %</td></tr>
+            <tr><td>Lluvia El Niño frente a lo normal</td><td colspan="2">9 % menos</td></tr>
+            <tr><td>Meses con helada · mínima típica</td><td colspan="2">80 % · −3.4 °C</td></tr>
+            <tr><td>Mejor rotación</td><td>haba → quinua</td><td>papa → haba</td></tr>
+          </tbody>
+        </table></div>
+        <div class="say">
+          <p>Al agricultor no le sirve el año calendario; le sirve la campaña, que va de octubre a abril. Por eso agrupamos los meses así: octubre de 2015 y marzo de 2016 son la misma campaña, la 2015-16.</p>
+          <p>Una campaña es seca si llueve menos del 75 % de lo normal, y hay helada si la mínima del mes baja de 0 °C. Son reglas que cualquiera puede leer y discutir.</p>
+          <p>La lista de años El Niño sale del índice RONI de NOAA (<code>enso.ts</code>). Para 2026-27, ENFEN ya anuncia El Niño: este escenario no es teórico.</p>
+        </div>
+      </section>
+
+      <!-- 06 -->
+      <section class="hito motor" id="h6">
+        <div class="hito-head"><span class="num">06</span><h2>El motor de rotación</h2><span class="tag t-motor">Motor</span><span class="min">6 min</span>
+          <label class="check"><input type="checkbox" id="c6" data-h="h6"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>Mueve las prioridades (comida, ingreso, suelo, clima) y mira cómo se reordena el top 3, con sus razones.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>services/rotacion.ts:132-180</code><code>services/cultivos.ts</code></div></div>
+        </div>
+<pre class="code"><span class="ln">132</span>function aptitud(cultivo: Cultivo, clima: Clima): Aptitud {
+<span class="ln">133</span>  const agua = Math.min(1, <mark>clima.lluvia / cultivo.aguaMinima</mark>)
+<span class="ln">134</span>  const sequia = clima.frecuenciaSequia * ((5 - cultivo.toleranciaSequia) / 4)
+<span class="ln">135</span>  const helada = clima.riesgoHelada * ((5 - cultivo.toleranciaHelada) / 4)
+<span class="ln">136</span>  return { agua, puntaje: <mark>agua * (1 - sequia) * (1 - helada)</mark> }
+<span class="ln">137</span>}
+<span class="ln">   </span><span class="c">// … para cada par año 1 → año 2 (6 × 6 = 36 rotaciones):</span>
+<span class="ln">155</span>      const componentes: Componentes = {
+<span class="ln">156</span>        comida: (c1.comida + c2.comida) / 10,
+<span class="ln">157</span>        ingreso: (c1.ingreso + c2.ingreso) / 10,
+<span class="ln">158</span>        suelo: <mark>(leguminosa ? 0.6 : 0) + (distintos ? 0.4 : 0)</mark>,
+<span class="ln">159</span>        clima: (a1.puntaje + a2.puntaje) / 2,
+<span class="ln">160</span>      }</pre>
+        <div class="tbl"><table>
+          <thead><tr><th>Haba → quinua en Carumas</th><th>Valor</th><th>Peso</th></tr></thead>
+          <tbody>
+            <tr><td>Comida: (4 + 4) / 10</td><td>0.80</td><td>× 2</td></tr>
+            <tr><td>Ingreso: (3 + 3) / 10</td><td>0.60</td><td>× 1</td></tr>
+            <tr><td>Suelo: haba fija nitrógeno (0.6) + cultivos distintos (0.4)</td><td>1.00</td><td>× 1</td></tr>
+            <tr><td>Clima: aptitud promedio de los dos cultivos</td><td>0.23</td><td>× 3</td></tr>
+            <tr><th>Total: (1.60 + 0.60 + 1.00 + 0.69) / 7</th><th>0.554</th><th>55/100</th></tr>
+          </tbody>
+        </table></div>
+        <div class="say">
+          <p>No hay inteligencia artificial aquí, y es a propósito. Son seis cultivos, cuatro números por cultivo y una suma ponderada. Un agrónomo puede leer este archivo y decirnos en qué nos equivocamos.</p>
+          <p>Cada recomendación trae sus razones (<code>explicar</code>, líneas 208-231): por qué el agua alcanza o no, qué cultivo aguanta la helada, por qué conviene una leguminosa.</p>
+          <p>Los valores de <code>cultivos.ts</code> son aproximados. Validarlos con un agrónomo local es el primer reto del hackathon.</p>
+        </div>
+      </section>
+
+      <!-- 07 -->
+      <section class="hito nasa" id="h7">
+        <div class="hito-head"><span class="num">07</span><h2>El índice del seguro</h2><span class="tag t-nasa">NASA</span><span class="tag t-avax">puente a Avalanche</span><span class="min">4 min</span>
+          <label class="check"><input type="checkbox" id="c7" data-h="h7"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>Mueve el <strong>umbral</strong> del seguro y mira qué campañas habrían pagado; las marcadas con «N» son años El Niño.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>services/rotacion.ts:235-249</code></div></div>
+        </div>
+<pre class="code"><span class="ln">235</span>export function backtest(clima: Clima, umbral: number): PuntoBacktest[] {
+<span class="ln">236</span>  return clima.campanias.map((c) => ({
+<span class="ln">237</span>    etiqueta: c.etiqueta,
+<span class="ln">238</span>    fase: c.fase,
+<span class="ln">239</span>    indice: <mark>c.humedadCritica</mark>,
+<span class="ln">240</span>    paga: <mark>c.humedadCritica &lt; umbral</mark>,
+<span class="ln">241</span>  }))
+<span class="ln">242</span>}
+<span class="ln">   </span><span class="c">// Umbral sugerido: el percentil 20 (paga ~1 de cada 5 campañas)</span>
+<span class="ln">245</span>export function umbralSugerido(clima: Clima, percentil = <mark>0.2</mark>): number {</pre>
+        <div class="say">
+          <p>Un seguro paramétrico no manda a un ajustador a ver la chacra: paga cuando un número medible cruza un umbral. Nuestro número es la humedad del suelo de la NASA (<code>GWETROOT</code>) de diciembre a febrero.</p>
+          <p>El backtest responde la pregunta que hace cualquier aseguradora: con esta regla, ¿cuándo habríamos pagado en los últimos 24 años? Con el umbral sugerido, 0.341, habría pagado 6 de 24 campañas, 3 de ellas El Niño.</p>
+          <p>Este es el puente: el mismo número que calculamos aquí es el que el oráculo publica en el contrato de Avalanche.</p>
+        </div>
+        <div class="ask"><strong>Si preguntan por el riesgo base:</strong><p>Es la debilidad de todo seguro paramétrico. Puede haber pérdida en la chacra sin que el índice cruce el umbral, o al revés. Por eso el umbral y el índice se calibran con datos del lugar.</p></div>
+      </section>
+
+      <!-- 08 -->
+      <section class="hito avax" id="h8">
+        <div class="hito-head"><span class="num">08</span><h2>El contrato en Solidity</h2><span class="tag t-avax">Avalanche</span><span class="min">6 min</span>
+          <label class="check"><input type="checkbox" id="c8" data-h="h8"> Hecho</label></div>
+        <div class="block"><h3>Abre</h3><div class="file"><code>contracts/src/PolizaParametrica.sol</code></div></div>
+<pre class="code"><span class="ln">14</span>        uint16 umbral;        <span class="c">// humedad del suelo x 1000 (ej. 450 = 0.450)</span>
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">20</span>        bytes32 hashDatos;    <span class="c">// huella de los datos de NASA usados (procedencia)</span>
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">24</span>    uint8 public constant <mark>DESCUENTO_ROTACION = 20</mark>; <span class="c">// % de descuento por rotación resiliente</span>
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">115</span>    function reportarIndice(uint256 zonaId, uint16 indice, bytes32 hashDatos) external <mark>soloOraculo</mark> zonaValida(zonaId) {
+<span class="ln">  </span><span class="c">    // …</span>
+<span class="ln">121</span>        <mark>z.disparada = indice &lt; z.umbral;</mark>
+<span class="ln">  </span><span class="c">// …</span>
+<span class="ln">126</span>    function <mark>reclamar</mark>(uint256 zonaId) external zonaValida(zonaId) {
+<span class="ln">128</span>        if (!z.disparada || !tienePoliza[zonaId][msg.sender] || cobrado[zonaId][msg.sender]) revert SinPago();
+<span class="ln">  </span><span class="c">        // …</span>
+<span class="ln">131</span>        <mark>cobrado[zonaId][msg.sender] = true;</mark>
+<span class="ln">132</span>        (bool ok, ) = payable(msg.sender).call{value: z.cobertura}("");</pre>
+        <div class="tbl"><table>
+          <thead><tr><th>Función</th><th>Quién la llama</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>crearZona</code> (l. 78)</td><td>Aseguradora (owner)</td><td>Define umbral, cobertura y prima</td></tr>
+            <tr><td><code>comprarPoliza</code> (l. 101)</td><td>Productor</td><td>Paga la prima exacta; 20 % menos si declara rotación</td></tr>
+            <tr><td><code>reportarIndice</code> (l. 115)</td><td>Solo el oráculo</td><td>Publica el índice una vez y decide si se dispara</td></tr>
+            <tr><td><code>reclamar</code> (l. 126)</td><td>Cada asegurado</td><td>Cobra su cobertura si se disparó</td></tr>
+          </tbody>
+        </table></div>
+        <div class="say">
+          <p>Solidity no tiene decimales. Por eso la humedad viaja multiplicada por 1000: 0.450 se guarda como 450.</p>
+          <p>El contrato une los dos mundos del taller: premia con un 20 % de descuento al productor que adopta la rotación resiliente que recomendó el motor.</p>
+          <p><code>hashDatos</code> guarda la huella de los datos de NASA que usó el oráculo. Cualquiera puede verificar de dónde salió el número.</p>
+          <p>El pago es pull: cada asegurado reclama lo suyo y no hay un bucle que pague a todos. Además marca <code>cobrado</code> antes de transferir, que es la defensa clásica contra la reentrada.</p>
+        </div>
+      </section>
+
+      <!-- 09 -->
+      <section class="hito avax" id="h9">
+        <div class="hito-head"><span class="num">09</span><h2>Desplegar en Fuji y el oráculo</h2><span class="tag t-avax">Avalanche</span><span class="min">3 min</span>
+          <label class="check"><input type="checkbox" id="c9" data-h="h9"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>La pestaña de Snowtrace con el contrato: transacciones, balance de 0.2 AVAX y la zona Carumas.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>contracts/script/DeployPoliza.s.sol:15-26</code><code>contracts/script/ReportarIndice.s.sol</code></div></div>
+        </div>
+<pre class="code"><span class="ln">18</span>        PolizaParametrica poliza = new PolizaParametrica(deployer);
+<span class="ln">  </span><span class="c">        // umbral 0.450 · cobertura 0.05 AVAX · prima 0.01 AVAX</span>
+<span class="ln">21</span>        poliza.crearZona(<mark>"Carumas", 450, 0.05 ether, 0.01 ether</mark>);
+<span class="ln">23</span>        (bool ok, ) = payable(address(poliza)).call{value: <mark>0.2 ether</mark>}("");</pre>
+<pre class="code">npm run contracts:deploy:poliza:fuji          <span class="c"># despliega, crea la zona y deposita fondos</span>
+CONTRATO=0x594c…961c INDICE=380 npm run contracts:reportar:fuji   <span class="c"># el oráculo publica 0.380</span></pre>
+        <div class="say">
+          <p>Fuji es la red de pruebas de Avalanche: la misma C-Chain compatible con Ethereum, pero con AVAX de prueba que regala el faucet. Todo lo que funciona aquí se lleva a mainnet cambiando la red.</p>
+          <p>En la demo, la misma wallet de prueba hace de aseguradora y de oráculo. En producción el oráculo sería otra pieza, por ejemplo Chainlink Functions leyendo NASA POWER.</p>
+          <p>Si el oráculo publica 380 y el umbral es 450, la póliza se dispara y cada asegurado puede reclamar.</p>
+        </div>
+      </section>
+
+      <!-- 10 -->
+      <section class="hito avax" id="h10">
+        <div class="hito-head"><span class="num">10</span><h2>La web habla con Avalanche</h2><span class="tag t-avax">Avalanche</span><span class="min">4 min</span>
+          <label class="check"><input type="checkbox" id="c10" data-h="h10"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>En pantalla</h3><p>Conecta la wallet en Fuji: aparece el bloque de la póliza con la prima con y sin rotación. Compra una con rotación y abre la transacción en Snowtrace.</p></div>
+          <div class="block"><h3>Abre</h3><div class="file"><code>hooks/usePoliza.ts:81-102</code><code>components/PolizaFuji.tsx:31-39</code></div></div>
+        </div>
+<pre class="code"><span class="ln">87</span>  if (<mark>walletClient.chain?.id !== avalancheFuji.id</mark>) throw new Error('Wrong network: switch to Avalanche Fuji')
+<span class="ln">  </span><span class="c">  // …</span>
+<span class="ln">91</span>    const value = await client.readContract({ ...base, functionName: 'prima', args: [ZONE_ID, conRotacion] })
+<span class="ln">92</span>    const { request } = await client.<mark>simulateContract</mark>({
+<span class="ln">93</span>      ...base,
+<span class="ln">94</span>      functionName,
+<span class="ln">95</span>      args: [ZONE_ID, conRotacion],
+<span class="ln">96</span>      value,
+<span class="ln">97</span>    })
+<span class="ln">98</span>    return walletClient.<mark>writeContract(request)</mark></pre>
+        <div class="say">
+          <p>Usamos viem y wagmi. Leer el contrato es gratis y no necesita wallet: cualquiera ve la zona, el umbral y si ya se disparó.</p>
+          <p>Antes de firmar hacemos tres cosas: verificar que la wallet esté en Fuji, pedirle al contrato la prima exacta y simular la transacción. Si algo va a fallar, falla antes de que el usuario pague gas.</p>
+          <p>El ABI que usa la web se genera desde el contrato compilado (<code>npm run contracts:sync-abi</code>) con tipos de TypeScript. Si cambias una función en Solidity, el editor te avisa en el frontend.</p>
+          <p>Sin wallet, o en otra red, el bloque de la póliza no aparece. La demo de NASA funciona igual para quien no tiene cripto.</p>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section class="hito motor" id="h11">
+        <div class="hito-head"><span class="num">11</span><h2>Por qué confiamos: tests</h2><span class="tag t-motor">Motor</span><span class="tag t-avax">Avalanche</span><span class="min">2 min</span>
+          <label class="check"><input type="checkbox" id="c11" data-h="h11"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>Abre</h3><div class="file"><code>services/__tests__/rotacion.golden.test.ts</code><code>contracts/test/PolizaParametrica.t.sol</code></div></div>
+          <div class="block"><h3>Corre en la terminal</h3><div class="file"><code>npm run test</code><code>npm run contracts:test</code></div></div>
+        </div>
+        <div class="say">
+          <p>Este proyecto es el port de un MVP en JavaScript. Para probar que no cambiamos ninguna recomendación, corrimos el MVP original con los mismos datos y guardamos su salida como golden. El test compara las 4 zonas, los 3 escenarios y 6 combinaciones de prioridades, número por número.</p>
+          <p>El contrato tiene sus propios tests en Foundry: el descuento, la prima incorrecta, que solo el oráculo reporte, que pague bajo el umbral y no sobre él, y que no se venda después del reporte.</p>
+        </div>
+      </section>
+
+      <!-- 12 -->
+      <section class="hito" id="h12">
+        <div class="hito-head"><span class="num">12</span><h2>Cierre y retos para el hackathon</h2><span class="min">2 min</span>
+          <label class="check"><input type="checkbox" id="c12" data-h="h12"> Hecho</label></div>
+        <div class="cols">
+          <div class="block"><h3>Más datos de la NASA</h3><ul>
+            <li>Vegetación (NDVI de MODIS) para confirmar daño real.</li>
+            <li>Humedad del suelo de SMAP, con mejor resolución que la celda de 50 km.</li>
+            <li>Comparar la lluvia con las estaciones de Senamhi y calibrar.</li>
+          </ul></div>
+          <div class="block"><h3>Más Avalanche</h3><ul>
+            <li>Oráculo real con Chainlink Functions.</li>
+            <li>Cerrar la venta de pólizas antes del pronóstico de El Niño.</li>
+            <li>Reservas para el año en que todos cobran a la vez.</li>
+          </ul></div>
+        </div>
+        <div class="say">
+          <p>Clonen <code>github.com/ferrosasfp/field-shift</code>, corran <code>npm ci</code> y <code>npm run dev</code>, y tienen todo esto funcionando en cinco minutos. El reto es hacerlo verdad en la chacra.</p>
+        </div>
+      </section>
+
+      <section class="hito" id="faq">
+        <div class="hito-head"><h2>Preguntas probables</h2></div>
+        <div class="faq">
+          <details><summary>¿Cuánto cuesta usar los datos de la NASA?</summary><p>Nada. NASA POWER es pública, sin registro ni llave. Solo pedimos con cariño: caché de 24 horas y un tiempo de espera.</p></details>
+          <details><summary>¿Por qué Ichuña y Yunga dan lo mismo?</summary><p>Caen en la misma celda de NASA POWER, de unos 50 km. Es una limitación honesta del dato y una buena excusa para usar SMAP o datos locales.</p></details>
+          <details><summary>¿Por qué la lluvia sale tan baja?</summary><p>NASA POWER da unos 110 mm por campaña en Carumas, cuando Senamhi mide bastante más. Es un modelo de celda grande; para decisiones reales hay que calibrar con estaciones.</p></details>
+          <details><summary>¿Por qué Avalanche?</summary><p>Es compatible con Ethereum (mismo Solidity, mismas herramientas), las transacciones se confirman rápido y cuestan poco, y Fuji da AVAX de prueba gratis. Para un seguro que paga centavos a muchos productores, el costo por transacción importa.</p></details>
+          <details><summary>¿Quién garantiza que el oráculo no mienta?</summary><p>En la demo, nadie: es una wallet de prueba. Por eso guardamos <code>hashDatos</code>, para auditar de dónde salió el número. En producción se usan oráculos descentralizados o varias fuentes que deben coincidir.</p></details>
+          <details><summary>¿Cómo sabe el contrato que el productor sí rotó?</summary><p>No lo sabe: en el MVP el productor lo declara. En producción lo verificaría una cooperativa o un segundo oráculo con imágenes de vegetación (NDVI).</p></details>
+          <details><summary>¿Esto se puede usar con dinero real?</summary><p>No. El contrato es educativo y no está auditado. Solo Fuji y wallets de prueba.</p></details>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-h]'));
+  var total = boxes.length;
+  var out = document.getElementById('progreso');
+  function leer() { try { return JSON.parse(localStorage.getItem('fs-ruta') || '{}'); } catch (e) { return {}; } }
+  function guardar(s) { try { localStorage.setItem('fs-ruta', JSON.stringify(s)); } catch (e) {} }
+  function pintar() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      var link = document.querySelector('nav.rail a[href="#' + b.dataset.h + '"]');
+      if (link) link.classList.toggle('done', b.checked);
+      if (b.checked) n++;
+    });
+    out.textContent = n + ' / ' + total;
+  }
+  var estado = leer();
+  boxes.forEach(function (b) {
+    b.checked = !!estado[b.id];
+    b.addEventListener('change', function () { estado[b.id] = b.checked; guardar(estado); pintar(); });
+  });
+  pintar();
+})();
+</script>
