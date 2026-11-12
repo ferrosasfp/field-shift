@@ -1,0 +1,285 @@
+<title>Guía Field Shift</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una columna de lectura (~68ch) con bandas por sección; la demo en 5 pasos como línea de campaña. */
+:root {
+  --bg: #f5f7f3;
+  --surface: #ffffff;
+  --fg: #18231d;
+  --muted: #56645b;
+  --line: #d8e0d6;
+  --accent: #1d6b48;      /* verde chacra (mismo emerald de la app) */
+  --soil: #a3621a;        /* ocre: alertas, sequía */
+  --sky: #2a5f8f;         /* NASA / datos */
+  --code-bg: #eef2ec;
+  --display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111814; --surface: #18211b; --fg: #e4ebe4; --muted: #9aab9f; --line: #2c3a31;
+    --accent: #5cc08f; --soil: #e0a457; --sky: #7fb3e3; --code-bg: #1d2820; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111814; --surface: #18211b; --fg: #e4ebe4; --muted: #9aab9f; --line: #2c3a31;
+  --accent: #5cc08f; --soil: #e0a457; --sky: #7fb3e3; --code-bg: #1d2820; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 48px 80px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: 1.6rem; font-weight: 800; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.eyebrow { font: 600 0.78rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+section { display: grid; gap: 18px; min-width: 0; }
+.lead { font-size: 1.1rem; color: var(--muted); }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+pre { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; font: 0.85rem/1.55 var(--mono); }
+pre code { background: none; padding: 0; font-size: inherit; }
+.muted { color: var(--muted); }
+.note { border-left: 3px solid var(--soil); padding: 10px 14px; background: color-mix(in srgb, var(--soil) 9%, transparent); border-radius: 0 6px 6px 0; }
+
+/* Servicios */
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.svc { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 4px; min-width: 0; }
+.svc b { font-family: var(--display); }
+.svc span { font: 0.82rem var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+
+/* Los 5 clics como línea de campaña */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: paso; }
+.step { display: grid; grid-template-columns: 44px 1fr; gap: 16px; position: relative; padding-bottom: 26px; }
+.step::before {
+  counter-increment: paso; content: counter(paso);
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  font: 800 1.1rem var(--display); color: var(--bg); background: var(--accent); z-index: 1;
+}
+.step:not(:last-child)::after { content: ""; position: absolute; left: 21px; top: 44px; bottom: 0; width: 2px; background: var(--line); }
+.step > div { display: grid; gap: 6px; min-width: 0; padding-top: 8px; }
+.step .code-ref { font: 0.82rem var(--mono); color: var(--sky); }
+
+/* Fórmula */
+.formula { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+.calc { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 0.75rem var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); white-space: nowrap; }
+td code { white-space: nowrap; }
+.table-wrap { overflow-x: auto; }
+
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow-x: auto; }
+.diagram pre.mermaid { background: none; border: 0; padding: 0; }
+ul.clean { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 68ch; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+summary { cursor: pointer; font-weight: 600; }
+details[open] summary { margin-bottom: 10px; }
+footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+
+<header style="display:grid;gap:14px">
+  <p class="eyebrow">NASA Space Apps 2026 · Team1 Avalanche · Moquegua</p>
+  <h1>Field Shift: cómo funciona por dentro</h1>
+  <p class="lead">Guía para presentar la demo en el workshop. Recorre la página en el orden de los 5 clics de la demo y, en cada paso, señala qué parte del código se ejecuta. Los números de ejemplo son los de Carumas con datos de NASA POWER 2001-2025.</p>
+</header>
+
+<section id="levantar">
+  <p class="eyebrow">Antes de empezar</p>
+  <h2>Levantar el proyecto</h2>
+  <p>Hay dos piezas: la app Next.js y Supabase local en Docker. Supabase solo lo usan login, dashboard, wallet y storage; <code>/field-shift</code> funciona sin él.</p>
+<pre><code># 1. Abrir Docker Desktop y luego, en C:\Fernando\ID\nexus-factory:
+npx supabase start          # base de datos, auth y correo local; aplica las 6 migraciones
+npm run dev                 # app en http://localhost:3000
+
+# Sin wifi: forzar los datos guardados (PowerShell)
+$env:FIELD_SHIFT_OFFLINE="true"; npm run dev
+
+# Al terminar
+npx supabase stop</code></pre>
+  <div class="services">
+    <div class="svc"><b>Demo Field Shift</b><span>localhost:3000/es/field-shift</span></div>
+    <div class="svc"><b>App (login)</b><span>localhost:3000/es/login</span></div>
+    <div class="svc"><b>Supabase Studio</b><span>127.0.0.1:54323</span></div>
+    <div class="svc"><b>Correos (Mailpit)</b><span>127.0.0.1:54324</span></div>
+  </div>
+  <p class="muted">Usuario de prueba: <code>demo@fieldshift.test</code>. La contraseña está en <code>.env.local</code> (<code>DEMO_USER_PASSWORD</code>); ese archivo no se sube al repo.</p>
+</section>
+
+<section id="demo">
+  <p class="eyebrow">La página</p>
+  <h2>La demo en 5 clics</h2>
+  <p>La pregunta que responde: <em>con 25 años de datos de satélite, ¿qué rotación conviene en mi zona y cuándo habría pagado un seguro?</em></p>
+  <ol class="steps">
+    <li class="step"><div>
+      <h3>Elegir Carumas y presionar «Consultar NASA»</h3>
+      <p>El navegador pide <code>GET /api/field-shift/nasa?zona=carumas</code>. El servidor consulta NASA POWER (lluvia, temperatura, mínima y humedad del suelo, mensual 2001-2025). Si NASA no responde en 8 s, usa la copia guardada en el repo. El estado dice si los datos vienen «en vivo» o de la «copia guardada».</p>
+      <span class="code-ref">hooks/useClima.ts → app/api/field-shift/nasa/route.ts → services/nasa.ts</span>
+    </div></li>
+    <li class="step"><div>
+      <h3>Leer las 6 tarjetas</h3>
+      <p>Carumas: <b>110 mm</b> de lluvia en la campaña (oct–abr), <b>21 %</b> de campañas secas, <b>80 %</b> de meses con helada, mínima típica <b>−3.4 °C</b>, y los años El Niño llueven <b>9 % menos</b>. Las tarjetas en ocre son alertas.</p>
+      <span class="code-ref">services/rotacion.ts → analizarClima() · components/TarjetasClima.tsx</span>
+    </div></li>
+    <li class="step"><div>
+      <h3>Cambiar a «Solo años El Niño»</h3>
+      <p>Se recalcula todo usando solo las 8 campañas El Niño (lista RONI de NOAA). La sequía sube a 25 % y la recomendación cambia: <b>haba → quinua</b> pasa a <b>papa → haba</b>. Buen momento para hablar de 2026-27, que viene con El Niño.</p>
+      <span class="code-ref">services/enso.ts → fase() · analizarClima(meses, 'nino')</span>
+    </div></li>
+    <li class="step"><div>
+      <h3>Mover las prioridades</h3>
+      <p>Cuatro sliders de 0 a 3: comida, ingreso, cuidar el suelo y resistir sequía y heladas. Se prueban las 36 combinaciones año 1 → año 2 con 6 cultivos y se muestran las 3 mejores, con sus razones en lenguaje simple. No hay llamada al servidor: todo corre en el navegador.</p>
+      <span class="code-ref">recomendarRotaciones() · services/razones.ts · components/Rotaciones.tsx</span>
+    </div></li>
+    <li class="step"><div>
+      <h3>Mover el umbral del seguro</h3>
+      <p>El índice es la humedad del suelo promedio de diciembre a febrero. Si cae bajo el umbral, la póliza paga. Con el umbral sugerido (0.341) habría pagado en <b>6 de 24</b> campañas, 3 de ellas El Niño (marcadas con «N»).</p>
+      <span class="code-ref">backtest() · umbralSugerido() · components/BacktestSeguro.tsx</span>
+    </div></li>
+  </ol>
+  <p class="note">Extra opcional: si conectas Core o MetaMask en Fuji aparece el bloque de la póliza para comprarla y reclamar el pago en Avalanche. Es un contrato educativo, no auditado, solo para testnet.</p>
+</section>
+
+<section id="arquitectura">
+  <p class="eyebrow">El código</p>
+  <h2>Cómo se conectan las piezas</h2>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  U[Navegador<br/>FieldShiftDemo] -->|zona| API[/api/field-shift/nasa<br/>route.ts/]
+  API -->|fetch 8s, caché 24h| NASA[(NASA POWER)]
+  API -.->|si falla| SNAP[(Snapshots<br/>data/*.json)]
+  API -->|meses normalizados| U
+  U --> CALC[services/rotacion.ts<br/>clima · rotación · backtest]
+  CALC --> UI[Tarjetas · Rotaciones · Backtest]
+  U -.->|wallet en Fuji| POL[usePoliza.ts]
+  POL --> SC[(PolizaParametrica<br/>Avalanche Fuji)]
+</pre>
+  </div>
+  <ul class="clean">
+    <li><b>Lógica pura</b> en <code>src/features/field-shift/services/</code>: sin React ni red, fácil de testear y de explicar.</li>
+    <li><b>Un solo endpoint</b>: solo acepta las 4 zonas conocidas (validado con Zod), así no sirve como proxy abierto a NASA.</li>
+    <li><b>Ruta pública</b>: <code>middleware.ts</code> se salta Supabase en <code>/field-shift</code>; el resto de la app sigue protegida.</li>
+    <li><b>Español e inglés</b>: todo texto sale de <code>messages/es.json</code> y <code>messages/en.json</code> (namespace <code>fieldShift</code>).</li>
+  </ul>
+</section>
+
+<section id="motor">
+  <p class="eyebrow">El cerebro</p>
+  <h2>Cómo decide la rotación</h2>
+  <p>Las reglas son simples a propósito: cualquiera puede leerlas y explicar por qué la app recomienda algo. Primero se mide qué tan bien le va a cada cultivo con el clima de la zona:</p>
+<pre><code>// services/rotacion.ts
+function aptitud(cultivo, clima) {
+  const agua   = Math.min(1, clima.lluvia / cultivo.aguaMinima)
+  const sequia = clima.frecuenciaSequia * ((5 - cultivo.toleranciaSequia) / 4)
+  const helada = clima.riesgoHelada    * ((5 - cultivo.toleranciaHelada) / 4)
+  return { agua, puntaje: agua * (1 - sequia) * (1 - helada) }
+}</code></pre>
+  <div class="formula">
+    <h3>Ejemplo: haba → quinua en Carumas</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Cultivo</th><th>Agua</th><th>Castigo sequía</th><th>Castigo helada</th><th>Aptitud</th></tr></thead>
+      <tbody>
+        <tr><td>Haba (necesita 350 mm)</td><td class="num">110/350 = 0.32</td><td class="num">0.21 × 3/4 = 0.16</td><td class="num">0.80 × 2/4 = 0.40</td><td class="num">0.16</td></tr>
+        <tr><td>Quinua (necesita 300 mm)</td><td class="num">110/300 = 0.37</td><td class="num">0.21 × 0/4 = 0</td><td class="num">0.80 × 1/4 = 0.20</td><td class="num">0.29</td></tr>
+      </tbody>
+    </table></div>
+    <p>Con eso se arman cuatro componentes por rotación, cada uno entre 0 y 1, y se promedian con los pesos de los sliders:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Componente</th><th>Regla</th><th>Haba → quinua</th><th>Peso</th></tr></thead>
+      <tbody>
+        <tr><td>Comida</td><td>(comida año 1 + año 2) / 10</td><td class="num">0.80</td><td class="num">2</td></tr>
+        <tr><td>Ingreso</td><td>(ingreso año 1 + año 2) / 10</td><td class="num">0.60</td><td class="num">1</td></tr>
+        <tr><td>Suelo</td><td>0.6 si hay leguminosa + 0.4 si cambia de cultivo</td><td class="num">1.00</td><td class="num">1</td></tr>
+        <tr><td>Sequía y heladas</td><td>promedio de las dos aptitudes</td><td class="num">0.23</td><td class="num">3</td></tr>
+      </tbody>
+    </table></div>
+    <p class="calc"><code>(0.80×2 + 0.60×1 + 1.00×1 + 0.23×3) / 7 = 0.554</code> → <b>55/100</b>.</p>
+  </div>
+  <p class="muted">Las 3 primeras rotaciones de Carumas empatan casi en 55: haba y quinua compensan la poca lluvia con suelo y tolerancia al frío. El MVP original da el mismo empate.</p>
+  <details>
+    <summary>Otras reglas del motor</summary>
+    <ul class="clean">
+      <li><b>Campaña</b>: octubre a abril. Oct–dic cuentan para la campaña que empieza ese año; ene–abr, para la del año anterior. Solo entran campañas con los 7 meses completos.</li>
+      <li><b>Campaña seca</b>: lluvia menor al 75 % del promedio de todas las campañas.</li>
+      <li><b>Helada</b>: un mes con temperatura mínima (T2M_MIN) bajo 0 °C.</li>
+      <li><b>Umbral sugerido</b>: percentil 20 del índice, para que la póliza pague más o menos 1 de cada 5 campañas.</li>
+      <li><b>El backtest</b> usa siempre todas las campañas, aunque cambies el escenario.</li>
+    </ul>
+  </details>
+</section>
+
+<section id="paridad">
+  <p class="eyebrow">Confianza</p>
+  <h2>Da lo mismo que el MVP original</h2>
+  <p>El código se portó línea por línea desde el MVP en JavaScript. Para probarlo, un script ejecuta el código original sobre los mismos datos y guarda la salida en <code>golden.json</code>. Los tests comparan el código nuevo contra ese archivo: números con 9 decimales y las razones palabra por palabra, en 4 zonas × 3 escenarios × 6 combinaciones de prioridades.</p>
+<pre><code>npm run test                                   # 243 tests, incluido el golden
+npm run field-shift:golden -- &lt;ruta-al-mvp&gt;    # regenerar el golden
+npm run test:e2e -- field-shift                 # los 5 clics en un navegador real</code></pre>
+</section>
+
+<section id="poliza">
+  <p class="eyebrow">Capa opcional</p>
+  <h2>La póliza paramétrica en Avalanche</h2>
+  <p>El contrato <code>PolizaParametrica.sol</code> paga sin ajustador: un oráculo publica el índice de la temporada y, si queda bajo el umbral, cada asegurado reclama su pago. Quien adopta una rotación resiliente paga 20 % menos de prima.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Función</th><th>Quién</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>comprarPoliza(zona, rotacion)</code></td><td>Productor</td><td>Paga la prima (0.01 AVAX o 0.008 con rotación)</td></tr>
+      <tr><td><code>reportarIndice(zona, indice, hash)</code></td><td>Oráculo</td><td>Publica la humedad × 1000; una sola vez por zona</td></tr>
+      <tr><td><code>reclamar(zona)</code></td><td>Asegurado</td><td>Cobra 0.05 AVAX si el índice quedó bajo 450</td></tr>
+    </tbody>
+  </table></div>
+  <p>Desplegado en Fuji: <a href="https://testnet.snowtrace.io/address/0x594c5D7Bb4ff20F296c1CfacFE4c5555e278961c" target="_blank" rel="noopener noreferrer"><code>0x594c…961c</code></a>, con la zona Carumas y 0.2 AVAX de fondos.</p>
+<pre><code># Disparar el pago al final de la demo (índice 380 = humedad 0.380, bajo el umbral)
+CONTRATO=0x594c5D7Bb4ff20F296c1CfacFE4c5555e278961c INDICE=380 npm run contracts:reportar:fuji</code></pre>
+  <p class="note">Después de reportar ya no se venden pólizas en esa zona. Hazlo al final. El contrato es educativo y no está auditado: solo Fuji y wallets de prueba.</p>
+</section>
+
+<section id="archivos">
+  <p class="eyebrow">Mapa</p>
+  <h2>Dónde está cada cosa</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Archivo</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><code>app/[locale]/field-shift/page.tsx</code></td><td>La ruta pública</td></tr>
+      <tr><td><code>features/field-shift/components/FieldShiftDemo.tsx</code></td><td>Orquesta el estado: zona, escenario, prioridades y umbral</td></tr>
+      <tr><td><code>features/field-shift/services/rotacion.ts</code></td><td>El motor: clima, rotación y backtest (empieza aquí)</td></tr>
+      <tr><td><code>features/field-shift/services/cultivos.ts</code></td><td>Los 6 cultivos y sus valores (validar con agrónomo)</td></tr>
+      <tr><td><code>features/field-shift/services/enso.ts</code></td><td>Años El Niño y La Niña (RONI, NOAA)</td></tr>
+      <tr><td><code>app/api/field-shift/nasa/route.ts</code></td><td>NASA POWER con caché y respaldo sin internet</td></tr>
+      <tr><td><code>features/field-shift/data/*.json</code></td><td>Datos guardados de las 4 zonas</td></tr>
+      <tr><td><code>features/field-shift/hooks/usePoliza.ts</code></td><td>Lee y firma transacciones del contrato</td></tr>
+      <tr><td><code>contracts/src/PolizaParametrica.sol</code></td><td>El contrato y sus 6 tests en <code>contracts/test</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="hackathon">
+  <p class="eyebrow">Para los equipos</p>
+  <h2>Limitaciones e ideas para el hackathon</h2>
+  <ul class="clean">
+    <li><b>Celdas de ~50 km</b>: Ichuña y Yunga dan lo mismo porque caen en la misma celda. Comparar con estaciones de Senamhi.</li>
+    <li><b>La lluvia de NASA sale baja</b> (110 mm en Carumas frente a ~300 mm de Senamhi). Calibrar o usar otra fuente.</li>
+    <li><b>Valores de cultivos aproximados</b>: validarlos con un agrónomo o una agencia agraria.</li>
+    <li>Agregar NDVI de MODIS o humedad de SMAP, un mapa para marcar la parcela, los valles con riego, o un oráculo con Chainlink Functions.</li>
+    <li>Elegir el escenario automáticamente con el pronóstico de ENFEN antes de sembrar.</li>
+  </ul>
+</section>
+
+<footer>Datos: NASA POWER (mensual, 2001-2025). Proyecto de ejemplo para el workshop; no es un producto oficial de NASA. Código en la rama <code>feat/001-field-shift</code> de NexusFactory.</footer>
+</div>

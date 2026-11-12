@@ -1,0 +1,297 @@
+{
+  "common": {
+    "appName": "NexusFactory",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "back": "Volver",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "welcome": "Bienvenido",
+    "retry": "Reintentar",
+    "search": "Buscar",
+    "noResults": "Sin resultados",
+    "pageNotFound": "404",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "viewDetails": "Ver detalles",
+    "notFound": "Página no encontrada",
+    "notFoundMessage": "La página que buscas no existe.",
+    "goHome": "Ir al inicio",
+    "tryAgain": "Intentar de nuevo",
+    "somethingWentWrong": "Algo salió mal"
+  },
+  "home": {
+    "title": "NexusFactory",
+    "subtitle": "Tu app está lista. Empieza a construir."
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "signup": "Crear Cuenta",
+    "signout": "Cerrar Sesión",
+    "loginTitle": "Bienvenido de vuelta",
+    "loginSubtitle": "Inicia sesión en tu cuenta",
+    "signupTitle": "Crear cuenta",
+    "signupSubtitle": "Comienza gratis",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "newPassword": "Nueva contraseña",
+    "signingIn": "Iniciando sesión...",
+    "creatingAccount": "Creando cuenta...",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "signupLink": "Regístrate",
+    "loginLink": "Inicia sesión",
+    "forgotPasswordTitle": "Restablecer contraseña",
+    "forgotPasswordSubtitle": "Ingresa tu correo para recibir un enlace de restablecimiento",
+    "sendResetLink": "Enviar Enlace",
+    "sending": "Enviando...",
+    "resetLinkSent": "Revisa tu correo para el enlace de restablecimiento.",
+    "backToLogin": "Volver al inicio de sesión",
+    "checkEmailTitle": "Revisa tu correo",
+    "checkEmailMessage": "Te hemos enviado un enlace de confirmación. Revisa tu correo para completar tu registro.",
+    "updatePasswordTitle": "Nueva contraseña",
+    "updatePasswordSubtitle": "Ingresa tu nueva contraseña",
+    "updatePassword": "Actualizar Contraseña",
+    "updating": "Actualizando...",
+    "confirmPassword": "Confirmar Contraseña",
+    "passwordsMismatch": "Las contraseñas no coinciden",
+    "continueWithGoogle": "Continuar con Google",
+    "orContinueWith": "o continúa con"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "wallet": "Billetera",
+    "contracts": "Contratos",
+    "storage": "Almacenamiento",
+    "signout": "Cerrar Sesión",
+    "menu": "Menú"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcomeUser": "Bienvenido, {email}"
+  },
+  "wallet": {
+    "title": "Billetera",
+    "connect": "Conectar Billetera",
+    "disconnect": "Desconectar",
+    "balance": "Saldo",
+    "network": "Red",
+    "address": "Dirección",
+    "switchNetwork": "Cambiar Red",
+    "smartAccount": "Cuenta Inteligente",
+    "externalWallet": "Billetera Externa"
+  },
+  "contracts": {
+    "title": "Contratos",
+    "read": "Leer Contrato",
+    "write": "Escribir Contrato",
+    "abi": "ABI del Contrato",
+    "address": "Dirección del Contrato"
+  },
+  "storage": {
+    "title": "Almacenamiento Descentralizado",
+    "description": "Sube y recupera archivos desde IPFS.",
+    "upload": "Subir Archivo",
+    "uploading": "Subiendo...",
+    "viewFile": "Ver Archivo",
+    "cid": "CID",
+    "gateway": "URL del Gateway",
+    "dragOrClick": "Arrastra un archivo aquí o haz clic para seleccionar",
+    "selectFile": "Seleccionar Archivo",
+    "uploadSuccess": "Archivo \"{name}\" subido exitosamente!",
+    "viewer": "Recuperar Archivo",
+    "enterCid": "Ingresa CID (ej. Qm...)",
+    "retrieve": "Recuperar",
+    "loading": "Cargando...",
+    "fileUrl": "URL del Archivo"
+  },
+  "transactions": {
+    "title": "Transacciones",
+    "status": "Estado",
+    "history": "Historial",
+    "pending": "Pendiente",
+    "confirmed": "Confirmada",
+    "failed": "Fallida"
+  },
+  "errors": {
+    "generic": "Algo salió mal",
+    "notFound": "Página no encontrada",
+    "notFoundDescription": "La página que buscas no existe o ha sido movida.",
+    "goHome": "Ir al inicio",
+    "tryAgain": "Intentar de nuevo",
+    "unauthorized": "No tienes autorización para acceder a esta página",
+    "networkError": "Error de red. Revisa tu conexión.",
+    "sessionExpired": "Tu sesión ha expirado. Inicia sesión nuevamente."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Ingresa un correo electrónico válido",
+    "passwordMin": "La contraseña debe tener al menos 6 caracteres",
+    "nameMin": "El nombre debe tener al menos 2 caracteres",
+    "invalidAddress": "Formato de dirección de billetera inválido",
+    "invalidCid": "Formato de CID IPFS inválido",
+    "fileTooLarge": "El archivo no debe superar {maxSize}MB",
+    "invalidFileType": "Tipo de archivo no soportado",
+    "invalidJson": "Formato JSON inválido"
+  },
+  "web3Errors": {
+    "walletNotConnected": "Conecta tu billetera primero",
+    "wrongNetwork": "Cambia a la red {network}",
+    "transactionFailed": "Transacción fallida",
+    "transactionRejected": "Transacción rechazada por el usuario",
+    "insufficientFunds": "Fondos insuficientes para esta transacción",
+    "contractError": "Error en contrato inteligente",
+    "walletAlreadyLinked": "Esta billetera ya está vinculada a otra cuenta",
+    "smartAccountNotConfigured": "Account Abstraction no está configurado"
+  },
+  "fieldShift": {
+    "title": "Field Shift: adapta tu chacra con datos de NASA",
+    "eyebrow": "NASA Space Apps 2026 · Reto Field Shift",
+    "subtitle": "25 años de datos satelitales de NASA sobre la sierra de Moquegua, convertidos en una recomendación de rotación de cultivos que se puede explicar.",
+    "metaDescription": "Clima de la campaña con NASA POWER, escenarios El Niño y La Niña, rotación de cultivos recomendada y backtest de un seguro paramétrico para la sierra de Moquegua.",
+    "avisoDatos": "Los valores agronómicos son aproximados: valídalos con un agrónomo local antes de usarlos con productores. Cada dato de NASA POWER cubre una celda de unos 50 km.",
+    "pie": "Datos: NASA POWER (lluvia, temperatura, temperatura mínima y humedad del suelo, mensual, celdas de unos 50 km). Proyecto de ejemplo para el workshop; no es un producto oficial de NASA.",
+    "zona": {
+      "titulo": "Elige la zona",
+      "label": "Zona",
+      "nota": "Solo zonas de sierra: en los valles con riego (Moquegua, Torata, Omate, Ilo) el agua viene de la lluvia que cae aquí arriba y se guarda en represas como Pasto Grande."
+    },
+    "zonas": {
+      "carumas": "Carumas, Mariscal Nieto",
+      "ichuna": "Ichuña, General Sánchez Cerro",
+      "ubinas": "Ubinas, General Sánchez Cerro",
+      "yunga": "Yunga, General Sánchez Cerro"
+    },
+    "consultar": "Consultar NASA",
+    "cargando": "Consultando NASA POWER… (puede tardar unos segundos)",
+    "listo": "Listo: {zona} · {origen}",
+    "origen": {
+      "nasa": "NASA POWER (en vivo)",
+      "offline": "NASA POWER (copia guardada)"
+    },
+    "errorDatos": "No se pudieron obtener los datos. Revisa tu conexión e inténtalo de nuevo.",
+    "errores": {
+      "CAMPANIAS_INSUFICIENTES": "No hay suficientes campañas completas para analizar",
+      "ESCENARIO_INSUFICIENTE": "Hay muy pocas campañas de ese escenario en los datos"
+    },
+    "clima": {
+      "titulo": "Lo que dicen los satélites"
+    },
+    "escenario": {
+      "label": "Escenario",
+      "todas": "Promedio de todas las campañas",
+      "nino": "Solo años con El Niño (como 2026-27)",
+      "nina": "Solo años con La Niña",
+      "periodo": {
+        "todas": "todas las campañas",
+        "nino": "solo campañas con El Niño",
+        "nina": "solo campañas con La Niña"
+      },
+      "resumen": "{zona} · {cuales} ({n} de {total}, entre {desde} y {hasta})"
+    },
+    "unidades": {
+      "mm": "{v} mm",
+      "celsius": "{v} °C",
+      "pct": "{v}%"
+    },
+    "tarjetas": {
+      "lluvia": "Lluvia promedio de la campaña (oct–abr), {cuales}",
+      "nino": "Lluvia en años El Niño comparada con el promedio de todas las campañas",
+      "secas": "Campañas secas (menos del 75% de lo normal), {cuales}",
+      "secasLista": "Campañas secas (menos del 75% de lo normal), {cuales}: {lista}",
+      "tmin": "Temperatura mínima típica de la campaña",
+      "helada": "Meses de campaña con mínima bajo 0 °C (riesgo de helada)",
+      "tendencia": "Cambio en la lluvia: segunda mitad del periodo vs. primera mitad"
+    },
+    "prioridades": {
+      "titulo": "¿Qué le importa más al productor?",
+      "comida": "Comida para la familia",
+      "ingreso": "Ingreso",
+      "suelo": "Cuidar el suelo",
+      "clima": "Resistir sequía y heladas"
+    },
+    "rotacion": {
+      "titulo": "Rotaciones recomendadas para dos campañas",
+      "item": "{n}. Año 1: {a} → Año 2: {b}",
+      "puntaje": "Puntaje {n}/100"
+    },
+    "backtest": {
+      "titulo": "Si hubiera existido un seguro, ¿cuándo habría pagado?",
+      "explicacion": "Índice: humedad promedio del suelo de diciembre a febrero, el corazón de la temporada de lluvias. Si cae debajo del umbral, la póliza paga.",
+      "umbral": "Umbral",
+      "grafico": "Índice de humedad del suelo por año y umbral de pago",
+      "leyendaUmbral": "- - - umbral de pago",
+      "marcaNino": "N",
+      "leyendaNino": "= campaña con El Niño",
+      "barra": "Campaña {etiqueta}: índice {indice}",
+      "barraNino": "Campaña {etiqueta} (El Niño): índice {indice}",
+      "barraNina": "Campaña {etiqueta} (La Niña): índice {indice}",
+      "paga": "{texto} → paga",
+      "resumen": "La póliza habría pagado en {pagos} de {total} campañas: {lista}. {nino} de esos pagos cayeron en años El Niño.",
+      "ninguno": "Con este umbral, la póliza no habría pagado en ninguna campaña."
+    },
+    "poliza": {
+      "titulo": "Capa opcional: póliza en Avalanche Fuji",
+      "opcional": "Conecta una wallet de prueba (Core o MetaMask) en Fuji",
+      "descripcion": "El mismo índice se publica en un contrato. Si cruza el umbral, cada productor asegurado reclama su pago sin ajustador. Quien adopta una rotación resiliente paga 20% menos de prima.",
+      "avisoNoAuditado": "Contrato educativo, no auditado. Úsalo solo en Fuji con una wallet de prueba, nunca con fondos reales.",
+      "redIncorrecta": "Tu wallet está en otra red. Cambia a Avalanche Fuji (testnet) para usar la póliza.",
+      "cambiarRed": "Cambiar a Fuji",
+      "cargando": "Leyendo el contrato…",
+      "zona": "Zona \"{nombre}\": umbral {umbral}",
+      "prima": "Prima: {monto} AVAX",
+      "primaRotacion": "Prima con rotación: {monto} AVAX",
+      "cobertura": "Cobertura: {monto} AVAX",
+      "sinIndice": "Índice aún no reportado",
+      "indiceReportado": "Índice reportado {indice}: {resultado}",
+      "resultadoPaga": "PAGA",
+      "resultadoNoPaga": "no paga",
+      "tienePoliza": "Ya tienes una póliza en esta zona.",
+      "adopto": "Adopto la rotación recomendada",
+      "comprar": "Comprar póliza",
+      "reclamar": "Reclamar pago",
+      "resumenCompra": "Vas a pagar {monto} AVAX en Avalanche Fuji (testnet) por la póliza de la zona {zona}.",
+      "resumenReclamo": "Vas a reclamar la cobertura de {monto} AVAX de la zona {zona} en Avalanche Fuji (testnet).",
+      "confirmar": "Confirmar",
+      "cancelar": "Cancelar",
+      "confirmaWallet": "Confirma la transacción en tu wallet…",
+      "exito": "Transacción confirmada.",
+      "verTx": "Ver transacción en Snowtrace (testnet)"
+    },
+    "cultivos": {
+      "papa": "Papa",
+      "haba": "Haba",
+      "cebada": "Cebada",
+      "avena": "Avena forrajera",
+      "quinua": "Quinua",
+      "maiz": "Maíz amiláceo"
+    },
+    "conjuncion": " y ",
+    "razones": {
+      "cuando": {
+        "todas": "en promedio",
+        "nino": "en años El Niño",
+        "nina": "en años La Niña"
+      },
+      "de": {
+        "todas": "de los años",
+        "nino": "de los años El Niño",
+        "nina": "de los años La Niña"
+      },
+      "aguaCubre": "{cultivo}: la lluvia de la campaña ({mm} mm {cuando}) cubre lo que necesita.",
+      "aguaParcial": "{cultivo}: la lluvia de la campaña ({mm} mm {cuando}) cubre solo el {pct}% de lo que necesita.",
+      "sequiaTolerantes": "Hubo campaña seca en {pct}% {de}; {cultivos} la resiste bien.",
+      "sequiaNinguno": "Ojo: hubo campaña seca en {pct}% {de} y ninguno de estos cultivos la tolera bien.",
+      "heladaSensibles": "Ojo con las heladas ({pct}% de los meses de campaña bajo 0 °C): {cultivos} es sensible al frío.",
+      "heladaResistentes": "Hay heladas en {pct}% de los meses de campaña; {cultivos} las aguanta bien.",
+      "leguminosa": "Incluye haba, una leguminosa que devuelve nitrógeno al suelo.",
+      "papaPrimero": "Sigue la lógica de la rotación andina: la papa primero, cuando el suelo está más descansado.",
+      "repite": "Repite el mismo cultivo: el suelo se cansa y las plagas se acumulan."
+    }
+  }
+}
